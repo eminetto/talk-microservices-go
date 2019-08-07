@@ -4,7 +4,7 @@ import (
 	"auth/user"
 	"encoding/json"
 	"github.com/codegangsta/negroni"
-	"github.com/eminetto/talk-microservices-go/pkg/security"
+	"auth/security"
 	"github.com/gorilla/context"
 	"github.com/gorilla/mux"
 	"log"

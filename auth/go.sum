@@ -2,9 +2,6 @@ github.com/codegangsta/negroni v1.0.0 h1:+aYywywx4bnKXWvoWtRfJ91vC59NbEhEY03sZjQ
 github.com/codegangsta/negroni v1.0.0/go.mod h1:v0y3T5G7Y1UlFfyxFn/QLRU4a2EuNau2iZY63YTKWo0=
 github.com/dgrijalva/jwt-go v3.2.0+incompatible h1:7qlOGliEKZXTDg6OTjfoBKDXWrumCAMpl/TFQ4/5kLM=
 github.com/dgrijalva/jwt-go v3.2.0+incompatible/go.mod h1:E3ru+11k8xSBh+hMPgOLZmtrrCbhqsmaPHjLKYnJCaQ=
-github.com/eminetto/talk-microservices-go v0.0.0-20190801211757-242fcaba35bc h1:wFQU5QChdzru6ykoyIDs8pMpCc+UxvzeaX3WuKkXF4g=
-github.com/eminetto/talk-microservices-go v0.0.0-20190807011406-0c8a8f7e356a h1:Zm1KbcULCWm6uqXylvL/TlurBKkrqUdFhA2ELqKVmIM=
-github.com/eminetto/talk-microservices-go v0.0.0-20190807011406-0c8a8f7e356a/go.mod h1:cjmfNGBcwKRs6aNxiiWpaYsFbv3qb4LP3B1JcCkUOUs=
 github.com/gorilla/context v1.1.1 h1:AWwleXJkX/nhcU9bZSnZoi3h/qGYqQAGhq6zZe/aQW8=
 github.com/gorilla/context v1.1.1/go.mod h1:kBGZzfjB9CEq2AlWe17Uuf7NDRt0dE0s8S51q0aT7Yg=
 github.com/gorilla/mux v1.7.3 h1:gnP5JzjVOuiZD07fKKToCAOjS0yOpj/qPETTXCCS6hw=
