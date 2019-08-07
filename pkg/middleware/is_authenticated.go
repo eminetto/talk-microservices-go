@@ -3,7 +3,6 @@ package middleware
 import (
 	"encoding/json"
 	"errors"
-	"github.com/eminetto/talk-microservices-go/pkg/security"
 	"net/http"
 	"strconv"
 
