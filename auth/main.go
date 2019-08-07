@@ -1,10 +1,10 @@
 package main
 
 import (
+	"auth/user"
 	"encoding/json"
 	"github.com/codegangsta/negroni"
-	"github.com/eminetto/talk-microservices-go/auth/pkg/security"
-	"github.com/eminetto/talk-microservices-go/auth/pkg/user"
+	"github.com/eminetto/talk-microservices-go/pkg/security"
 	"github.com/gorilla/context"
 	"github.com/gorilla/mux"
 	"log"
@@ -14,7 +14,7 @@ import (
 )
 
 func main() {
-	uService := user.NewUserService()
+	uService := user.NewService()
 	r := mux.NewRouter()
 	//handlers
 	n := negroni.New(
@@ -31,7 +31,7 @@ func main() {
 	srv := &http.Server{
 		ReadTimeout:  30 * time.Second,
 		WriteTimeout: 30 * time.Second,
-		Addr:         ":8081",
+		Addr:         ":8081", //@TODO usar variável de ambiente
 		Handler:      context.ClearHandler(http.DefaultServeMux),
 		ErrorLog:     logger,
 	}
@@ -110,7 +110,6 @@ func validateToken() http.Handler {
 			w.WriteHeader(http.StatusBadGateway)
 			return
 		}
-		w.WriteHeader(http.StatusOK)
 		return
 	})
 }

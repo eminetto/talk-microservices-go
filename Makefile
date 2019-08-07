@@ -10,7 +10,7 @@ build-auth:
 	cd auth; go build -o ../bin/auth main.go
 
 build-feedback:
-	cd feedback; go build -o ../bin/feedback main.go
+	cd feedbacks; go build -o ../bin/feedbacks main.go
 
 build-vote:
-	cd vote; go build -o ../bin/vote main.go
+	cd votes; go build -o ../bin/votes main.go
