@@ -3,14 +3,14 @@ package middleware
 import (
 	"encoding/json"
 	"errors"
+	"github.com/eminetto/talk-microservices-go/pkg/security"
 	"net/http"
 	"strconv"
 
 	"github.com/codegangsta/negroni"
-	"github.com/eminetto/talk-microservices-go/pkg/security"
 )
 
-func IsJWTAuthenticated() negroni.HandlerFunc {
+func IsAuthenticated() negroni.HandlerFunc {
 	return func(rw http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 		errorMessage := "Erro na autenticação"
 		tokenString := r.Header.Get("Authorization")
@@ -19,19 +19,22 @@ func IsJWTAuthenticated() negroni.HandlerFunc {
 			respondWithError(rw, http.StatusUnauthorized, err.Error(), errorMessage)
 			return
 		}
-		token, err := security.ParseToken(tokenString)
+		req, err := http.Get("http://localhost:8081") //@TODO usar variável de ambiente
 		if err != nil {
 			respondWithError(rw, http.StatusUnauthorized, err.Error(), errorMessage)
 			return
 		}
-
-		claims, err := security.GetClaims(token)
+		defer req.Body.Close()
+		type result struct {
+			Email string `json:"email"`
+		}
+		var res result
+		err = json.NewDecoder(req.Body).Decode(&res)
 		if err != nil {
-			err := errors.New("Unauthorized")
 			respondWithError(rw, http.StatusUnauthorized, err.Error(), errorMessage)
 			return
 		}
-		r.Header.Add("email", claims["email"])
+		r.Header.Add("email", res.Email)
 
 		next(rw, r)
 	}
