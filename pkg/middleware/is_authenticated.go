@@ -3,7 +3,6 @@ package middleware
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -26,7 +25,6 @@ func IsAuthenticated() negroni.HandlerFunc {
 		//@TODO usar variável de ambiente
 		req, err := http.Post("http://localhost:8081/v1/validate-token", "text/plain", strings.NewReader(payload))
 		if err != nil {
-			fmt.Println(err)
 			respondWithError(rw, http.StatusUnauthorized, err.Error(), errorMessage)
 			return
 		}
