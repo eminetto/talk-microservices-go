@@ -5,6 +5,7 @@ import (
 	"feedbacks/feedback"
 	"github.com/codegangsta/negroni"
 	"github.com/eminetto/talk-microservices-go/pkg/middleware"
+	"github.com/google/uuid"
 	"github.com/gorilla/context"
 	"github.com/gorilla/mux"
 	"log"
@@ -43,16 +44,23 @@ func main() {
 
 func storeFeedback(fService feedback.UseCase) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		var param feedback.Feedback
-		err := json.NewDecoder(r.Body).Decode(&param)
+		var f feedback.Feedback
+		err := json.NewDecoder(r.Body).Decode(&f)
 		if err != nil {
 			w.WriteHeader(http.StatusBadGateway)
 			return
 		}
-		param.Email = r.Header.Get("email")
-		err = fService.Store(param)
+		f.Email = r.Header.Get("email")
+		var result struct {
+			ID uuid.UUID `json:"id"`
+		}
+		result.ID, err = fService.Store(f)
 		if err != nil{
 			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		if err := json.NewEncoder(w).Encode(result); err != nil {
+			w.WriteHeader(http.StatusBadGateway)
 			return
 		}
 		return

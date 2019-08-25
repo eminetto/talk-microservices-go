@@ -1,10 +1,10 @@
 package main
 
 import (
+	"auth/security"
 	"auth/user"
 	"encoding/json"
 	"github.com/codegangsta/negroni"
-	"auth/security"
 	"github.com/gorilla/context"
 	"github.com/gorilla/mux"
 	"log"
@@ -43,34 +43,30 @@ func main() {
 
 func userAuth(uService user.UseCase) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		type parameters struct {
+		var param struct {
 			Email    string `json:"email"`
 			Password string `json:"password"`
 		}
-		var param parameters
 		err := json.NewDecoder(r.Body).Decode(&param)
 		if err != nil {
 			w.WriteHeader(http.StatusBadGateway)
 			return
-		}
-		type result struct {
-			Token string `json:"token"`
 		}
 		err = uService.ValidateUser(param.Email, param.Password)
 		if err != nil{
 			w.WriteHeader(http.StatusForbidden)
 			return
 		}
-		t, err := security.NewToken(param.Email)
+		var result struct {
+			Token string `json:"token"`
+		}
+		result.Token, err = security.NewToken(param.Email)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-		res := &result{
-			Token: t,
-		}
 
-		if err := json.NewEncoder(w).Encode(res); err != nil {
+		if err := json.NewEncoder(w).Encode(result); err != nil {
 			w.WriteHeader(http.StatusBadGateway)
 			return
 		}
@@ -80,18 +76,15 @@ func userAuth(uService user.UseCase) http.Handler {
 
 func validateToken() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		type parameters struct {
+		var param struct {
 			Token    string `json:"token"`
 		}
-		var param parameters
 		err := json.NewDecoder(r.Body).Decode(&param)
 		if err != nil {
 			w.WriteHeader(http.StatusBadGateway)
 			return
 		}
-		type result struct {
-			Email string `json:"email"`
-		}
+
 		t, err := security.ParseToken(param.Token)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
@@ -102,11 +95,12 @@ func validateToken() http.Handler {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-		res := &result{
-			Email: tData["email"].(string),
+		var result struct {
+			Email string `json:"email"`
 		}
+		result.Email = tData["email"].(string)
 
-		if err := json.NewEncoder(w).Encode(res); err != nil {
+		if err := json.NewEncoder(w).Encode(result); err != nil {
 			w.WriteHeader(http.StatusBadGateway)
 			return
 		}
