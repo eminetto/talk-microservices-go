@@ -6,7 +6,7 @@ type UseCase interface {
 	ValidateUser(email, password string) error
 }
 
-type Service struct {}
+type Service struct{}
 
 func NewService() *Service {
 	return &Service{}
