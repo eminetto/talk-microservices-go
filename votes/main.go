@@ -2,22 +2,23 @@ package main
 
 import (
 	"encoding/json"
-	"github.com/codegangsta/negroni"
-	"github.com/eminetto/talk-microservices-go/pkg/middleware"
-	"github.com/google/uuid"
-	"github.com/gorilla/context"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 	"os"
 	"time"
 	"votes/vote"
+
+	"github.com/codegangsta/negroni"
+	"github.com/eminetto/talk-microservices-go/pkg/middleware"
+	"github.com/google/uuid"
+	"github.com/gorilla/context"
+	"github.com/gorilla/mux"
 )
 
 func main() {
 	vService := vote.NewService()
 	r := mux.NewRouter()
-	//handlers
+	// handlers
 	n := negroni.New(
 		negroni.NewLogger(),
 	)
@@ -26,13 +27,12 @@ func main() {
 		negroni.Wrap(storeVote(vService)),
 	)).Methods("POST", "OPTIONS")
 
-
 	http.Handle("/", r)
 	logger := log.New(os.Stderr, "logger: ", log.Lshortfile)
 	srv := &http.Server{
 		ReadTimeout:  30 * time.Second,
 		WriteTimeout: 30 * time.Second,
-		Addr:         ":8083",//@TODO usar variável de ambiente
+		Addr:         ":8083", //@TODO usar variável de ambiente
 		Handler:      context.ClearHandler(http.DefaultServeMux),
 		ErrorLog:     logger,
 	}
@@ -55,7 +55,7 @@ func storeVote(vService vote.UseCase) http.Handler {
 			ID uuid.UUID `json:"id"`
 		}
 		result.ID, err = vService.Store(v)
-		if err != nil{
+		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}

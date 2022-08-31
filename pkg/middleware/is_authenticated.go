@@ -23,7 +23,7 @@ func IsAuthenticated() negroni.HandlerFunc {
 			"token": "` + tokenString + `"
 		}`
 		//@TODO usar variável de ambiente
-		req, err := http.Post("http://localhost:8081/v1/validate-token", "text/plain", strings.NewReader(payload))
+		req, err := http.Post("http://auth:8081/v1/validate-token", "text/plain", strings.NewReader(payload))
 		if err != nil {
 			respondWithError(rw, http.StatusUnauthorized, err.Error(), errorMessage)
 			return
@@ -44,7 +44,7 @@ func IsAuthenticated() negroni.HandlerFunc {
 	}
 }
 
-//RespondWithError return a http error
+// RespondWithError return a http error
 func respondWithError(w http.ResponseWriter, code int, e string, message string) {
 	respondWithJSON(w, code, map[string]string{"code": strconv.Itoa(code), "error": e, "message": message})
 }
