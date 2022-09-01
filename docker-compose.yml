@@ -5,16 +5,13 @@ services:
     ports:
       - "8081:8081"
     container_name: auth
-    # network_mode: "bridge"
   feedbacks:
     image: feedbacks-image
     ports:
       - "8082:8082"
     container_name: feedbacks
-    # network_mode: "bridge"
   votes:
     image: votes-image
     ports:
       - "8083:8083"
     container_name: votes
-    # network_mode: "bridge"
