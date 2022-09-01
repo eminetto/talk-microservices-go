@@ -22,7 +22,7 @@ func IsAuthenticated() negroni.HandlerFunc {
 		payload := `{
 			"token": "` + tokenString + `"
 		}`
-		//@TODO usar variável de ambiente
+		//@TODO get address from environment variables
 		req, err := http.Post("http://localhost:8081/v1/validate-token", "text/plain", strings.NewReader(payload))
 		if err != nil {
 			respondWithError(rw, http.StatusUnauthorized, err.Error(), errorMessage)
