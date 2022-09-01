@@ -4,19 +4,20 @@ import (
 	"auth/security"
 	"auth/user"
 	"encoding/json"
-	"github.com/codegangsta/negroni"
-	"github.com/gorilla/context"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 	"os"
 	"time"
+
+	"github.com/codegangsta/negroni"
+	"github.com/gorilla/context"
+	"github.com/gorilla/mux"
 )
 
 func main() {
 	uService := user.NewService()
 	r := mux.NewRouter()
-	//handlers
+	// handlers
 	n := negroni.New(
 		negroni.NewLogger(),
 	)
@@ -53,7 +54,7 @@ func userAuth(uService user.UseCase) http.Handler {
 			return
 		}
 		err = uService.ValidateUser(param.Email, param.Password)
-		if err != nil{
+		if err != nil {
 			w.WriteHeader(http.StatusForbidden)
 			return
 		}
@@ -77,7 +78,7 @@ func userAuth(uService user.UseCase) http.Handler {
 func validateToken() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		var param struct {
-			Token    string `json:"token"`
+			Token string `json:"token"`
 		}
 		err := json.NewDecoder(r.Body).Decode(&param)
 		if err != nil {

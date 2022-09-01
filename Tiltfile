@@ -1,11 +1,3 @@
-# -*- mode: Python -*-
-# compile_cmd = 'CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/poc-api ./cmd/api/main.go'
-# local_resource(
-#     'example-go-compile',
-#     compile_cmd,
-#     deps=['./cmd/main.go']
-# )
-
 local_resource('auth', cmd='cd auth; go build -o bin/auth main.go',
                serve_cmd='auth/bin/auth', deps=['auth/main.go', 'auth/security', 'auth/user', 'pkg'])
 
