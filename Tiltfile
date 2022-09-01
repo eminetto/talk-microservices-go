@@ -27,11 +27,20 @@ local_resource(
     deps=['feedbacks/main.go', 'feedbacks/feedback', 'pkg'],
 )
 
-docker_build(
+docker_build_with_restart(
     'feedbacks-image',
     './feedbacks',
     dockerfile='feedbacks/Dockerfile',
+    entrypoint=['/feedbacks'],
+    live_update=[
+        sync('./feedbacks/bin/feedbacks', '/feedbacks'),
+    ],
 )
+
+k8s_yaml('feedbacks/kubernetes.yaml')
+k8s_resource('ms-feedbacks', port_forwards=8082,
+             resource_deps=['feedbacks-compile'])
+
 
 local_resource(
     'votes-compile',
@@ -39,8 +48,16 @@ local_resource(
     deps=['votes/main.go', 'votes/vote', 'pkg'],
 )
 
-docker_build(
+docker_build_with_restart(
     'votes-image',
     './votes',
     dockerfile='votes/Dockerfile',
+    entrypoint=['/votes'],
+    live_update=[
+        sync('./votes/bin/votes', '/votes'),
+    ],
 )
+
+k8s_yaml('votes/kubernetes.yaml')
+k8s_resource('ms-votes', port_forwards=8083,
+             resource_deps=['votes-compile'])

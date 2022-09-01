@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-votes
+  labels:
+    app: ms-votes
+spec:
+  selector:
+    matchLabels:
+      app: ms-votes
+  template:
+    metadata:
+      labels:
+        app: ms-votes
+    spec:
+      containers:
+        - name: ms-votes
+          image: votes-image
+          ports:
+            - containerPort: 8083

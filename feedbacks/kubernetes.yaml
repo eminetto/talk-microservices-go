@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-feedbacks
+  labels:
+    app: ms-feedbacks
+spec:
+  selector:
+    matchLabels:
+      app: ms-feedbacks
+  template:
+    metadata:
+      labels:
+        app: ms-feedbacks
+    spec:
+      containers:
+        - name: ms-feedbacks
+          image: feedbacks-image
+          ports:
+            - containerPort: 8082

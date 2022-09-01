@@ -22,6 +22,7 @@ func main() {
 	n := negroni.New(
 		negroni.NewLogger(),
 	)
+
 	r.Handle("/v1/feedback", n.With(
 		negroni.HandlerFunc(middleware.IsAuthenticated()),
 		negroni.Wrap(storeFeedback(fService)),
